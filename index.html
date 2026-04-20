@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BADR SHAGHIF — Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,900&family=DM+Mono:wght@300;400&family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink:    #070a12;
+    --cream:  #e8eef8;
+    --muted:  #4a5a78;
+    --accent: #1a6cff;
+    --line:   rgba(232,238,248,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  html[lang="ar"] body {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 300;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(26,108,255,0.45);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: border-color 0.3s;
+  }
+
+  /* ── NOISE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.55;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid rgba(232,238,248,0.15);
+    padding: 8px 18px;
+    cursor: none;
+    transition: color 0.3s, border-color 0.3s;
+    font-family: inherit;
+  }
+  html[lang="ar"] .lang-toggle {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+  }
+  .lang-toggle:hover {
+    color: var(--cream);
+    border-color: rgba(232,238,248,0.35);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 48px;
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    background: rgba(7,10,18,0.72);
+    gap: 24px;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--cream);
+    text-decoration: none;
+  }
+
+  .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  html[lang="ar"] .nav-links a {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .nav-links a:hover { color: var(--cream); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-cta {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border: 1px solid rgba(232,238,248,0.25);
+    padding: 10px 24px;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  html[lang="ar"] .nav-cta {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding: 160px 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  .hero-year {
+    position: absolute;
+    top: 140px; right: 48px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  html[lang="ar"] .hero-year {
+    right: auto; left: 48px;
+  }
+
+  .hero-index {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  html[lang="ar"] .hero-index {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(54px, 8vw, 118px);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+  html[lang="ar"] .hero-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(42px, 6vw, 90px);
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  html[lang="ar"] .hero-title em {
+    font-style: normal;
+  }
+
+  .hero-right {
+    padding-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 40px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 360px;
+    border-left: 1px solid var(--accent);
+    padding-left: 20px;
+  }
+  html[lang="ar"] .hero-desc {
+    font-family: 'Cairo', sans-serif;
+    border-left: none;
+    border-right: 1px solid var(--accent);
+    padding-left: 0;
+    padding-right: 20px;
+    text-align: right;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+  }
+  html[lang="ar"] .hero-stats {
+    flex-direction: row-reverse;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+    display: block;
+  }
+  html[lang="ar"] .stat-label {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 12px;
+    text-transform: none;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    background: var(--accent);
+  }
+
+  .marquee {
+    display: flex;
+    animation: marquee 22s linear infinite;
+    white-space: nowrap;
+  }
+  html[lang="ar"] .marquee {
+    animation: marquee-rtl 22s linear infinite;
+  }
+
+  .marquee span {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0 40px;
+  }
+  html[lang="ar"] .marquee span {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 14px;
+    text-transform: none;
+  }
+
+  .marquee span.dot { color: rgba(255,255,255,0.35); padding: 0; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes marquee-rtl {
+    from { transform: translateX(0); }
+    to   { transform: translateX(50%); }
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 100px 48px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  html[lang="ar"] .section-title {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  html[lang="ar"] .section-label {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 12px;
+    text-transform: none;
+  }
+
+  /* ── SERVICES GRID ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .service-item {
+    border: 1px solid var(--line);
+    padding: 48px 40px 80px;
+    position: relative;
+    transition: border-color 0.4s, background 0.4s;
+    cursor: none;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .service-item:hover {
+    border-color: rgba(26,108,255,0.35);
+    background: rgba(26,108,255,0.04);
+  }
+
+  .service-num {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  html[lang="ar"] .service-name {
+    font-family: 'Cairo', sans-serif;
+    line-height: 1.3;
+  }
+
+  .service-desc {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  html[lang="ar"] .service-desc {
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .service-price {
+    position: absolute;
+    bottom: 48px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  html[lang="ar"] .service-price {
+    font-family: 'Cairo', sans-serif;
+    left: auto; right: 40px;
+    text-align: right;
+  }
+
+  .service-price-range {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    display: block;
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+  }
+  html[lang="ar"] .service-price-range {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 12px;
+  }
+
+  .service-arrow {
+    position: absolute;
+    bottom: 48px; right: 40px;
+    font-size: 22px;
+    color: var(--muted);
+    transition: color 0.3s, transform 0.3s;
+  }
+  html[lang="ar"] .service-arrow {
+    right: auto; left: 40px;
+  }
+
+  .service-item:hover .service-arrow {
+    color: var(--accent);
+    transform: translate(4px, -4px);
+  }
+  html[lang="ar"] .service-item:hover .service-arrow {
+    transform: translate(-4px, -4px);
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: block;
+  }
+  html[lang="ar"] .about-eyebrow {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  html[lang="ar"] .about-heading {
+    font-family: 'Cairo', sans-serif;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .about-heading em { font-style: italic; }
+  html[lang="ar"] .about-heading em { font-style: normal; }
+
+  .about-right {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .about-text {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--muted);
+  }
+  html[lang="ar"] .about-text {
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    text-align: right;
+  }
+
+  .about-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  html[lang="ar"] .about-stack {
+    flex-direction: row-reverse;
+  }
+
+  .stack-tag {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(26,108,255,0.3);
+    padding: 6px 14px;
+  }
+
+  .about-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,238,248,0.25);
+    padding-bottom: 8px;
+    width: fit-content;
+    transition: border-color 0.3s, gap 0.3s;
+  }
+  html[lang="ar"] .about-cta {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 14px;
+    text-transform: none;
+    flex-direction: row-reverse;
+  }
+
+  .about-cta:hover { border-color: var(--accent); gap: 20px; }
+
+  /* ── CONTACT STRIP ── */
+  .contact-strip {
+    padding: 100px 48px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .contact-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  html[lang="ar"] .contact-eyebrow {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .contact-big {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 80px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  html[lang="ar"] .contact-big {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+
+  .contact-big em { font-style: italic; color: var(--accent); }
+  html[lang="ar"] .contact-big em { font-style: normal; }
+
+  .contact-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+  html[lang="ar"] .contact-sub {
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+  }
+
+  .contact-info {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .contact-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--cream);
+  }
+
+  .contact-hours {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  html[lang="ar"] .contact-hours {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .contact-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    background: var(--accent);
+    padding: 14px 36px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  html[lang="ar"] .contact-wa {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 14px;
+    text-transform: none;
+    flex-direction: row-reverse;
+  }
+
+  .contact-wa:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  html[lang="ar"] .footer-text {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  html[lang="ar"] .footer-links a {
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: none;
+  }
+
+  .footer-links a:hover { color: var(--cream); }
+
+  /* ── FADE UP ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── LANG TRANSITION ── */
+  .lang-transition * {
+    transition: none !important;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; gap: 12px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; grid-template-columns: 1fr; }
+    .hero-right { margin-top: 40px; }
+    .hero-year { display: none; }
+    .section { padding: 60px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .about-strip { padding: 60px 24px; grid-template-columns: 1fr; gap: 40px; }
+    .contact-strip { padding: 60px 24px; }
+    footer { padding: 40px 24px; flex-direction: column; gap: 20px; text-align: center; }
+    .footer-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">BADR.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#services" data-key="nav_services">Services</a></li>
+    <li><a href="#about" data-key="nav_about">About</a></li>
+    <li><a href="#contact" data-key="nav_contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">العربية</button>
+    <a href="#contact" class="nav-cta" data-key="nav_cta">Let's build</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-year" data-key="hero_year">Est. 2024</div>
+  <div class="hero-left">
+    <p class="hero-index" data-key="hero_index">[ 01 — Portfolio ]</p>
+    <h1 class="hero-title" data-key="hero_title">
+      I build<br><em>digital</em><br>products.
+    </h1>
+  </div>
+  <div class="hero-right fade-up">
+    <p class="hero-desc" data-key="hero_desc">
+      14-year-old developer from Saudi Arabia. I craft websites, desktop apps, and Android APKs — and I'm building a team of young programmers who dream big.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">5+</span>
+        <span class="stat-label" data-key="stat_langs">Languages</span>
+      </div>
+      <div>
+        <span class="stat-num">3</span>
+        <span class="stat-label" data-key="stat_platforms">Platforms</span>
+      </div>
+      <div>
+        <span class="stat-num">14</span>
+        <span class="stat-label" data-key="stat_age">Years old</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee" id="marqueeTrack">
+    <span>Websites</span><span class="dot"> · </span>
+    <span>Android APKs</span><span class="dot"> · </span>
+    <span>PC Software</span><span class="dot"> · </span>
+    <span>Python</span><span class="dot"> · </span>
+    <span>Rust</span><span class="dot"> · </span>
+    <span>Go</span><span class="dot"> · </span>
+    <span>C / C++</span><span class="dot"> · </span>
+    <span>HTML / CSS</span><span class="dot"> · </span>
+    <span>Websites</span><span class="dot"> · </span>
+    <span>Android APKs</span><span class="dot"> · </span>
+    <span>PC Software</span><span class="dot"> · </span>
+    <span>Python</span><span class="dot"> · </span>
+    <span>Rust</span><span class="dot"> · </span>
+    <span>Go</span><span class="dot"> · </span>
+    <span>C / C++</span><span class="dot"> · </span>
+    <span>HTML / CSS</span><span class="dot"> · </span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-header">
+    <h2 class="section-title fade-up" data-key="services_title">What I offer</h2>
+    <span class="section-label" data-key="services_label">[ 02 — Services ]</span>
+  </div>
+  <div class="services-grid">
+    <a class="service-item fade-up" href="https://wa.me/966561338789?text=Hi%20Badr!%20I'm%20interested%20in%20a%20Website." target="_blank" rel="noopener">
+      <span class="service-num">01</span>
+      <h3 class="service-name" data-key="s1_name">Websites</h3>
+      <p class="service-desc" data-key="s1_desc">Clean, fast, and fully custom websites built from scratch. Simple landing pages to full multi-page sites — no templates, all code.</p>
+      <div class="service-price">
+        20 – 45 SAR
+        <span class="service-price-range" data-key="price_range">Simple → Complicated</span>
+      </div>
+      <span class="service-arrow">↗</span>
+    </a>
+    <a class="service-item fade-up" href="https://wa.me/966561338789?text=Hi%20Badr!%20I'm%20interested%20in%20a%20PC%20App." target="_blank" rel="noopener">
+      <span class="service-num">02</span>
+      <h3 class="service-name" data-key="s2_name">PC Apps</h3>
+      <p class="service-desc" data-key="s2_desc">Desktop applications for Windows and Linux. Utilities, tools, or full-featured software — built with performance in mind.</p>
+      <div class="service-price">
+        30 – 55 SAR
+        <span class="service-price-range" data-key="price_range">Simple → Complicated</span>
+      </div>
+      <span class="service-arrow">↗</span>
+    </a>
+    <a class="service-item fade-up" href="https://wa.me/966561338789?text=Hi%20Badr!%20I'm%20interested%20in%20an%20Android%20APK." target="_blank" rel="noopener">
+      <span class="service-num">03</span>
+      <h3 class="service-name" data-key="s3_name">Android APKs</h3>
+      <p class="service-desc" data-key="s3_desc">Native Android apps delivered as APK files. From simple utilities to fully-featured apps — ready to install on any Android device.</p>
+      <div class="service-price">
+        25 – 45 SAR
+        <span class="service-price-range" data-key="price_range">Simple → Complicated</span>
+      </div>
+      <span class="service-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div class="about-left fade-up">
+    <span class="about-eyebrow" data-key="about_eyebrow">[ 03 — About ]</span>
+    <h2 class="about-heading" data-key="about_heading">
+      Young dev,<br><em>big</em><br>ambitions.
+    </h2>
+  </div>
+  <div class="about-right fade-up">
+    <p class="about-text" data-key="about_p1">
+      I'm Badr Shaghif, a 14-year-old self-taught developer from Mecca, Saudi Arabia. I started coding out of curiosity and never stopped. I build real things — websites, apps, and tools — for real clients.
+    </p>
+    <p class="about-text" data-key="about_p2">
+      I'm also forming a team of young developers who have big dreams in tech. If you're young, hungry, and serious about building — let's talk.
+    </p>
+    <div class="about-stack">
+      <span class="stack-tag">HTML/CSS</span>
+      <span class="stack-tag">C / C++</span>
+      <span class="stack-tag">Python</span>
+      <span class="stack-tag">Go</span>
+      <span class="stack-tag">Rust</span>
+    </div>
+    <a href="#contact" class="about-cta" data-key="about_cta">Get in touch →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-strip" id="contact">
+  <p class="contact-eyebrow" data-key="contact_eyebrow">[ 04 — Contact ]</p>
+  <h2 class="contact-big" data-key="contact_title">
+    Let's <em>build</em><br>something.
+  </h2>
+  <p class="contact-sub" data-key="contact_sub">Order a service, join my team, or just say hi — reach out on WhatsApp.</p>
+  <div class="contact-info">
+    <div class="contact-number">0561338789</div>
+    <div class="contact-hours" data-key="contact_hours">Available 2:00 PM – 9:00 PM · Saudi Arabia</div>
+    <a href="https://wa.me/966561338789" target="_blank" rel="noopener" class="contact-wa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      <span data-key="contact_wa_btn">Open WhatsApp</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">BADR.DEV</div>
+  <p class="footer-text" data-key="footer_copy">© 2025 Badr Shaghif. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="https://www.tiktok.com/@badr_shaghif_official" target="_blank">TikTok</a></li>
+    <li><a href="#contact" data-key="footer_wa">WhatsApp</a></li>
+  </ul>
+</footer>
+
+<script>
+  /* ── TRANSLATIONS ── */
+  const translations = {
+    en: {
+      nav_services: 'Services',
+      nav_about: 'About',
+      nav_contact: 'Contact',
+      nav_cta: "Let's build",
+      hero_year: 'Est. 2024',
+      hero_index: '[ 01 — Portfolio ]',
+      hero_title: 'I build<br><em>digital</em><br>products.',
+      hero_desc: "14-year-old developer from Saudi Arabia. I craft websites, desktop apps, and Android APKs — and I'm building a team of young programmers who dream big.",
+      stat_langs: 'Languages',
+      stat_platforms: 'Platforms',
+      stat_age: 'Years old',
+      services_title: 'What I offer',
+      services_label: '[ 02 — Services ]',
+      s1_name: 'Websites',
+      s1_desc: 'Clean, fast, and fully custom websites built from scratch. Simple landing pages to full multi-page sites — no templates, all code.',
+      s2_name: 'PC Apps',
+      s2_desc: 'Desktop applications for Windows and Linux. Utilities, tools, or full-featured software — built with performance in mind.',
+      s3_name: 'Android APKs',
+      s3_desc: 'Native Android apps delivered as APK files. From simple utilities to fully-featured apps — ready to install on any Android device.',
+      price_range: 'Simple → Complicated',
+      about_eyebrow: '[ 03 — About ]',
+      about_heading: 'Young dev,<br><em>big</em><br>ambitions.',
+      about_p1: "I'm Badr Shaghif, a 14-year-old self-taught developer from Mecca, Saudi Arabia. I started coding out of curiosity and never stopped. I build real things — websites, apps, and tools — for real clients.",
+      about_p2: "I'm also forming a team of young developers who have big dreams in tech. If you're young, hungry, and serious about building — let's talk.",
+      about_cta: 'Get in touch →',
+      contact_eyebrow: '[ 04 — Contact ]',
+      contact_title: "Let's <em>build</em><br>something.",
+      contact_sub: 'Order a service, join my team, or just say hi — reach out on WhatsApp.',
+      contact_hours: 'Available 2:00 PM – 9:00 PM · Saudi Arabia',
+      contact_wa_btn: 'Open WhatsApp',
+      footer_copy: '© 2025 Badr Shaghif. All rights reserved.',
+      footer_wa: 'WhatsApp',
+      marquee: ['Websites','Android APKs','PC Software','Python','Rust','Go','C / C++','HTML / CSS'],
+      lang_toggle: 'العربية',
+    },
+    ar: {
+      nav_services: 'الخدمات',
+      nav_about: 'من أنا',
+      nav_contact: 'التواصل',
+      nav_cta: 'لنبني معًا',
+      hero_year: 'منذ ٢٠٢٤',
+      hero_index: '[ ٠١ — الأعمال ]',
+      hero_title: 'أبني<br><em>منتجات</em><br>رقمية.',
+      hero_desc: 'مطور عمره ١٤ عامًا من المملكة العربية السعودية. أصنع مواقع إلكترونية وتطبيقات سطح مكتب وتطبيقات أندرويد — وأبني فريقًا من المبرمجين الشباب الطموحين.',
+      stat_langs: 'لغة برمجة',
+      stat_platforms: 'منصات',
+      stat_age: 'عامًا',
+      services_title: 'ما أقدمه',
+      services_label: '[ ٠٢ — الخدمات ]',
+      s1_name: 'مواقع إلكترونية',
+      s1_desc: 'مواقع سريعة وأنيقة مبنية من الصفر. من صفحة الهبوط البسيطة إلى المواقع متعددة الصفحات — بدون قوالب، كل شيء بالكود.',
+      s2_name: 'تطبيقات PC',
+      s2_desc: 'تطبيقات سطح مكتب لـ Windows وLinux. أدوات وبرمجيات عالية الأداء مصنوعة باحترافية.',
+      s3_name: 'تطبيقات أندرويد',
+      s3_desc: 'تطبيقات أندرويد أصلية جاهزة للتثبيت كملف APK. من أبسط الأدوات إلى التطبيقات المتكاملة.',
+      price_range: 'بسيط ← معقد',
+      about_eyebrow: '[ ٠٣ — من أنا ]',
+      about_heading: 'مطور شاب،<br><em>طموح</em><br>بلا حدود.',
+      about_p1: 'أنا بدر شاغف، مطور يتعلم ذاتيًا عمره ١٤ عامًا من مكة المكرمة. بدأت البرمجة من الفضول ولم أتوقف. أبني أشياء حقيقية — مواقع وتطبيقات وأدوات — لعملاء حقيقيين.',
+      about_p2: 'أكوّن أيضًا فريقًا من المطورين الشباب الذين يحلمون كبيرًا في مجال التقنية. إذا كنت شابًا جادًا ومتحمسًا — تواصل معي.',
+      about_cta: 'تواصل معي ←',
+      contact_eyebrow: '[ ٠٤ — التواصل ]',
+      contact_title: 'لنبني<br><em>شيئًا</em> معًا.',
+      contact_sub: 'اطلب خدمة، انضم للفريق، أو فقط سلّم — تواصل عبر واتساب.',
+      contact_hours: 'متاح من ٢:٠٠ م حتى ٩:٠٠ م · المملكة العربية السعودية',
+      contact_wa_btn: 'فتح واتساب',
+      footer_copy: '© ٢٠٢٥ بدر شاغف. جميع الحقوق محفوظة.',
+      footer_wa: 'واتساب',
+      marquee: ['مواقع إلكترونية','تطبيقات أندرويد','برامج PC','Python','Rust','Go','C / C++','HTML / CSS'],
+      lang_toggle: 'English',
+    }
+  };
+
+  let currentLang = 'en';
+
+  function buildMarquee(lang) {
+    const items = translations[lang].marquee;
+    const doubled = [...items, ...items];
+    return doubled.map(t => `<span>${t}</span><span class="dot"> · </span>`).join('');
+  }
+
+  function applyLang(lang) {
+    const t = translations[lang];
+    const html = document.documentElement;
+    html.lang = lang;
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      if (t[key] !== undefined) {
+        el.innerHTML = t[key];
+      }
+    });
+
+    document.getElementById('marqueeTrack').innerHTML = buildMarquee(lang);
+    document.getElementById('langToggle').textContent = t.lang_toggle;
+    currentLang = lang;
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    applyLang(currentLang === 'en' ? 'ar' : 'en');
+  });
+
+  /* ── CUSTOM CURSOR ── */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  (function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+
+  document.querySelectorAll('a, .service-item, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '18px';
+      cursor.style.height = '18px';
+      cursor.style.opacity = '0.6';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursor.style.opacity = '1';
+    });
+  });
+
+  /* ── SCROLL FADE UP ── */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 90);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
